@@ -1,4 +1,4 @@
-use iced::widget::{container, button, row, Column, Text};
+use iced::widget::{container, button, row, text_input, Column, Text};
 use iced::Element;
 
 mod filemanage;
@@ -6,14 +6,16 @@ mod filemanage;
 struct FileEditor
 {
 	_currentfiles: Vec<String>,
+	_filename: String,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 enum Message
 {
 	UpdateFiles,
+	AddFilesName(String),
 	AddFiles,
-	DestroyFiles,
+	DestroyFiles
 }
 
 impl Default for FileEditor
@@ -23,6 +25,7 @@ impl Default for FileEditor
         FileEditor
 		{
             _currentfiles: filemanage::getfiles(),
+			_filename: String::new(),
         }
     }
 }
@@ -40,10 +43,17 @@ impl FileEditor
 
 			Message::AddFiles =>
 			{
-				filemanage::createfile("Test");
+				filemanage::createfile(&self._filename);
 				self._currentfiles = filemanage::getfiles();
 			}
-			
+
+			Message::AddFilesName(_name) =>
+			{
+				//filemanage::createfile(&self._filename);
+				//self._currentfiles = filemanage::getfiles();
+				self._filename = _name
+			}
+
 			Message::DestroyFiles =>
 			{
 				todo!();
@@ -57,6 +67,10 @@ impl FileEditor
 
 		_textelements = _textelements.push(button("Update Files").on_press(Message::UpdateFiles));
 		_textelements = _textelements.push(button("Create Files").on_press(Message::AddFiles));
+
+		_textelements = _textelements.push(
+		text_input("Type filename here...", &self._filename)
+        	.on_input(Message::AddFilesName));
 
 		for _file in &self._currentfiles
 		{
