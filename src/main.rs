@@ -66,11 +66,16 @@ impl FileEditor
 		let mut _textelements: Column<Message> = Column::new();
 
 		_textelements = _textelements.push(button("Update Files").on_press(Message::UpdateFiles));
-		_textelements = _textelements.push(button("Create Files").on_press(Message::AddFiles));
 
-		_textelements = _textelements.push(
-		text_input("Type filename here...", &self._filename)
-        	.on_input(Message::AddFilesName));
+		_textelements = _textelements.push
+			(
+				row![	
+		 				button("Create Files").on_press(Message::AddFiles),
+
+						text_input("Type filename here...", &self._filename)
+						.on_input(Message::AddFilesName),
+					]
+			);
 
 		for _file in &self._currentfiles
 		{
