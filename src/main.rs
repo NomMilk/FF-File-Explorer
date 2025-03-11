@@ -5,8 +5,8 @@ mod filemanage;
 
 struct FileEditor
 {
-	_currentfiles: Vec<String>,
-	_filename: String,
+	currentfiles: Vec<String>,
+	filename: String,
 }
 
 #[derive(Debug, Clone)]
@@ -24,8 +24,8 @@ impl Default for FileEditor
 	{
         FileEditor
 		{
-            _currentfiles: filemanage::getfiles(),
-			_filename: String::new(),
+            currentfiles: filemanage::getfiles(),
+			filename: String::new(),
         }
     }
 }
@@ -38,20 +38,20 @@ impl FileEditor
 		{	
 			Message::UpdateFiles =>
 			{
-				self._currentfiles = filemanage::getfiles();
+				self.currentfiles = filemanage::getfiles();
 			}
 
 			Message::AddFiles =>
 			{
-				filemanage::createfile(&self._filename);
-				self._currentfiles = filemanage::getfiles();
+				filemanage::createfile(&self.filename);
+				self.currentfiles = filemanage::getfiles();
 			}
 
 			Message::AddFilesName(_name) =>
 			{
-				//filemanage::createfile(&self._filename);
-				//self._currentfiles = filemanage::getfiles();
-				self._filename = _name
+				//filemanage::createfile(&self.filename);
+				//self.currentfiles = filemanage::getfiles();
+				self.filename = _name
 			}
 
 			Message::DestroyFiles =>
@@ -72,12 +72,12 @@ impl FileEditor
 				row![	
 		 				button("Create Files").on_press(Message::AddFiles),
 
-						text_input("Type filename here...", &self._filename)
+						text_input("Type filename here...", &self.filename)
 						.on_input(Message::AddFilesName),
 					]
 			);
 
-		for _file in &self._currentfiles
+		for _file in &self.currentfiles
 		{
 			_textelements = _textelements.push(Text::new(_file));
 		}
