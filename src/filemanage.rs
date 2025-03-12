@@ -6,6 +6,11 @@ pub fn createfile(_textname: &str)
 	let mut _file = File::create(format!("{}.txt", _textname.trim())); 
 }
 
+pub fn destroyfile(_filename: &str)
+{
+	let _ = fs::remove_file(_filename);
+}
+
 pub fn getfiles() -> Vec<String>
 {
     let _paths = fs::read_dir("./").unwrap();

@@ -13,7 +13,7 @@ struct FileEditor
 enum Message
 {
 	UpdateFiles,
-	AddFilesName(String),
+	ChangeFilesName(String),
 	AddFiles,
 	DestroyFiles
 }
@@ -47,16 +47,15 @@ impl FileEditor
 				self.currentfiles = filemanage::getfiles();
 			}
 
-			Message::AddFilesName(_name) =>
+			Message::ChangeFilesName(_name) =>
 			{
-				//filemanage::createfile(&self.filename);
-				//self.currentfiles = filemanage::getfiles();
 				self.filename = _name
 			}
 
 			Message::DestroyFiles =>
 			{
-				todo!();
+				filemanage::destroyfile(&self.filename);
+				self.currentfiles = filemanage::getfiles();
 			}
 		}
 	}
@@ -65,17 +64,19 @@ impl FileEditor
 	{
 		let mut _textelements: Column<Message> = Column::new();
 
-		_textelements = _textelements.push(button("Update Files").on_press(Message::UpdateFiles));
-
 		_textelements = _textelements.push
 			(
 				row![	
 		 				button("Create Files").on_press(Message::AddFiles),
+						button("Delete Files").on_press(Message::DestroyFiles),
 
 						text_input("Type filename here...", &self.filename)
-						.on_input(Message::AddFilesName),
+						.on_input(Message::ChangeFilesName),
 					]
 			);
+
+		_textelements = _textelements.push(button("Update Files").on_press(Message::UpdateFiles));
+
 
 		for _file in &self.currentfiles
 		{
